@@ -170,6 +170,45 @@ async function startServer() {
     return res.json({ success: true, ticket });
   });
 
+  // Dual CISO / Infra Head Approval via Email / WhatsApp / Portal
+  app.post('/api/tickets/:id/approve-step', (req: Request, res: Response) => {
+    const { roleOrStepId, comments, channel } = req.body;
+    const actorId = (req.headers['x-user-id'] as string) || 'usr-ciso';
+    const actorUser = itsmStorage.getUserById(actorId);
+
+    const ticket = itsmStorage.approveTicketStep(
+      req.params.id,
+      roleOrStepId,
+      comments,
+      channel || 'PORTAL',
+      actorUser
+    );
+    if (!ticket) {
+      return res.status(404).json({ error: 'Ticket not found' });
+    }
+    return res.json({ success: true, ticket });
+  });
+
+  // Operations Manager Assign Concern Team
+  app.post('/api/tickets/:id/assign-concern-team', (req: Request, res: Response) => {
+    const { groupId, technicianId, opsInstructions } = req.body;
+    if (!groupId) {
+      return res.status(400).json({ error: 'Concern team assignment group is required' });
+    }
+    const actorId = (req.headers['x-user-id'] as string) || 'usr-ops-mgr';
+    const actorUser = itsmStorage.getUserById(actorId);
+
+    const ticket = itsmStorage.assignConcernTeam(
+      req.params.id,
+      { groupId, technicianId, opsInstructions },
+      actorUser
+    );
+    if (!ticket) {
+      return res.status(404).json({ error: 'Ticket not found' });
+    }
+    return res.json({ success: true, ticket });
+  });
+
   app.post('/api/tickets/:id/status', (req: Request, res: Response) => {
     const { status, comment } = req.body;
     const actorId = (req.headers['x-user-id'] as string) || 'usr-admin';
@@ -485,6 +524,144 @@ async function startServer() {
       return res.status(404).json({ error: 'User not found' });
     }
     return res.json({ success: true, user: updated });
+  });
+
+  app.delete('/api/admin/users/:id', (req: Request, res: Response) => {
+    const deleted = itsmStorage.deleteUser(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    return res.json({ success: true, message: 'User deleted successfully' });
+  });
+
+  // Departments CRUD
+  app.post('/api/admin/departments', (req: Request, res: Response) => {
+    const { code, name, headName, headEmail, headPhone, cisoName, cisoEmail, cisoPhone, infraHeadName, infraHeadEmail, infraHeadPhone, opsManagerName, opsManagerEmail, opsManagerPhone, requiresDualApproval, approvalChannels, description } = req.body;
+    if (!code || !name) {
+      return res.status(400).json({ error: 'Department code and name are required' });
+    }
+    const dept = itsmStorage.createDepartment({
+      code,
+      name,
+      headName,
+      headEmail,
+      headPhone,
+      cisoName,
+      cisoEmail,
+      cisoPhone,
+      infraHeadName,
+      infraHeadEmail,
+      infraHeadPhone,
+      opsManagerName,
+      opsManagerEmail,
+      opsManagerPhone,
+      requiresDualApproval: Boolean(requiresDualApproval),
+      approvalChannels: approvalChannels || ['EMAIL', 'WHATSAPP'],
+      description,
+    });
+    return res.status(201).json({ success: true, department: dept });
+  });
+
+  app.put('/api/admin/departments/:id', (req: Request, res: Response) => {
+    const updated = itsmStorage.updateDepartment(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ error: 'Department not found' });
+    }
+    return res.json({ success: true, department: updated });
+  });
+
+  app.delete('/api/admin/departments/:id', (req: Request, res: Response) => {
+    const deleted = itsmStorage.deleteDepartment(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Department not found' });
+    }
+    return res.json({ success: true, message: 'Department deleted' });
+  });
+
+  // Service Catalog Items CRUD
+  app.post('/api/admin/service-catalog', (req: Request, res: Response) => {
+    const { code, title, category, description, iconName, estimatedDelivery, defaultPriority, requiresApproval, approvalStages, fields } = req.body;
+    if (!title || !category) {
+      return res.status(400).json({ error: 'Title and category are required' });
+    }
+    const item = itsmStorage.createServiceCatalogItem({
+      code: code || `SC-${Date.now().toString().slice(-4)}`,
+      title,
+      category,
+      description: description || '',
+      iconName: iconName || 'Server',
+      estimatedDelivery: estimatedDelivery || '1 Business Day',
+      defaultPriority: defaultPriority || 'MEDIUM',
+      requiresApproval: requiresApproval !== undefined ? requiresApproval : true,
+      approvalStages: approvalStages || ['CISO Approval', 'Infra Head Approval', 'Operations Assignment'],
+      fields: fields || [],
+    });
+    return res.status(201).json({ success: true, item });
+  });
+
+  app.put('/api/admin/service-catalog/:id', (req: Request, res: Response) => {
+    const updated = itsmStorage.updateServiceCatalogItem(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ error: 'Service catalog item not found' });
+    }
+    return res.json({ success: true, item: updated });
+  });
+
+  app.delete('/api/admin/service-catalog/:id', (req: Request, res: Response) => {
+    const deleted = itsmStorage.deleteServiceCatalogItem(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Service catalog item not found' });
+    }
+    return res.json({ success: true, message: 'Catalog item deleted' });
+  });
+
+  // Assignment Groups CRUD
+  app.post('/api/admin/groups', (req: Request, res: Response) => {
+    const { name, description, email, memberIds } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: 'Group name is required' });
+    }
+    const group = itsmStorage.createGroup({
+      name,
+      description: description || '',
+      email: email || '',
+      memberIds: memberIds || [],
+    });
+    return res.status(201).json({ success: true, group });
+  });
+
+  app.put('/api/admin/groups/:id', (req: Request, res: Response) => {
+    const updated = itsmStorage.updateGroup(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ error: 'Group not found' });
+    }
+    return res.json({ success: true, group: updated });
+  });
+
+  app.delete('/api/admin/groups/:id', (req: Request, res: Response) => {
+    const deleted = itsmStorage.deleteGroup(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Group not found' });
+    }
+    return res.json({ success: true, message: 'Group deleted' });
+  });
+
+  // SLA & Notification Template updates
+  app.put('/api/admin/sla/:priority', (req: Request, res: Response) => {
+    const priority = req.params.priority.toUpperCase() as Priority;
+    const updated = itsmStorage.updateSLADefinition(priority, req.body);
+    if (!updated) {
+      return res.status(404).json({ error: 'SLA definition not found' });
+    }
+    return res.json({ success: true, sla: updated });
+  });
+
+  app.put('/api/admin/notification-templates/:id', (req: Request, res: Response) => {
+    const updated = itsmStorage.updateNotificationTemplate(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ error: 'Notification template not found' });
+    }
+    return res.json({ success: true, template: updated });
   });
 
   app.get('/api/admin/config', (req: Request, res: Response) => {

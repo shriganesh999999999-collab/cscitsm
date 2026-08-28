@@ -85,13 +85,110 @@ export class ITSMStorage {
 
     // 1. Departments
     const depts: Department[] = [
-      { id: 'dept-1', code: 'PMU', name: 'Project Management Unit', headName: 'Sanjay Kumar' },
-      { id: 'dept-2', code: 'CYBER', name: 'Cyber Security Operations (CSOC)', headName: 'Vikram Aditya' },
-      { id: 'dept-3', code: 'INFRA', name: 'Cloud Infrastructure & DC', headName: 'Amit Sharma' },
-      { id: 'dept-4', code: 'OPS', name: 'State Operations & VLE Desk', headName: 'Rahul Deshmukh' },
-      { id: 'dept-5', code: 'DBA', name: 'Database & Data Warehouse', headName: 'Anil Rao' },
-      { id: 'dept-6', code: 'LEGAL', name: 'Legal & Regulatory Compliance', headName: 'Meenakshi Iyer' },
-      { id: 'dept-7', code: 'HR', name: 'Human Resource & Admin', headName: 'Shalini Saxena' },
+      {
+        id: 'dept-tech',
+        code: 'TECH',
+        name: 'Technology',
+        headName: 'Sanjay Sharma',
+        headEmail: 'sanjay.sharma@csc.gov.in',
+        headPhone: '+91 98100 11223',
+        cisoName: 'Dr. Amitav Sen (CISO)',
+        cisoEmail: 'ciso@csc.gov.in',
+        cisoPhone: '+91 98101 23456',
+        infraHeadName: 'Vikram Malhotra (Infra Head)',
+        infraHeadEmail: 'infra.head@csc.gov.in',
+        infraHeadPhone: '+91 98112 34567',
+        opsManagerName: 'Rajesh Kumar (Operations Manager)',
+        opsManagerEmail: 'ops.manager@csc.gov.in',
+        opsManagerPhone: '+91 98118 77665',
+        requiresDualApproval: true,
+        approvalChannels: ['EMAIL', 'WHATSAPP'],
+        description: 'Enterprise Technology, Software Engineering & Core Architecture',
+      },
+      {
+        id: 'dept-3',
+        code: 'INFRA',
+        name: 'Cloud Infrastructure & DC',
+        headName: 'Vikram Malhotra',
+        headEmail: 'infra.head@csc.gov.in',
+        headPhone: '+91 98112 34567',
+        cisoName: 'Dr. Amitav Sen (CISO)',
+        cisoEmail: 'ciso@csc.gov.in',
+        cisoPhone: '+91 98101 23456',
+        infraHeadName: 'Vikram Malhotra (Infra Head)',
+        infraHeadEmail: 'infra.head@csc.gov.in',
+        infraHeadPhone: '+91 98112 34567',
+        opsManagerName: 'Rajesh Kumar (Operations Manager)',
+        opsManagerEmail: 'ops.manager@csc.gov.in',
+        opsManagerPhone: '+91 98118 77665',
+        requiresDualApproval: true,
+        approvalChannels: ['EMAIL', 'WHATSAPP'],
+        description: 'Cloud Infrastructure, National Data Centre (NDC) & SDC Management',
+      },
+      {
+        id: 'dept-2',
+        code: 'CYBER',
+        name: 'Cyber Security Operations (CSOC)',
+        headName: 'Dr. Amitav Sen',
+        headEmail: 'ciso@csc.gov.in',
+        headPhone: '+91 98101 23456',
+        cisoName: 'Dr. Amitav Sen (CISO)',
+        cisoEmail: 'ciso@csc.gov.in',
+        cisoPhone: '+91 98101 23456',
+        requiresDualApproval: false,
+        approvalChannels: ['EMAIL', 'WHATSAPP'],
+        description: 'CSOC 24/7 Security Monitoring, Threat Intel, and Identity Security',
+      },
+      {
+        id: 'dept-4',
+        code: 'OPS',
+        name: 'State Operations & VLE Desk',
+        headName: 'Rahul Deshmukh',
+        headEmail: 'rahul.deshmukh@csc.gov.in',
+        headPhone: '+91 97654 32109',
+        opsManagerName: 'Rajesh Kumar (Operations Manager)',
+        opsManagerEmail: 'ops.manager@csc.gov.in',
+        opsManagerPhone: '+91 98118 77665',
+        requiresDualApproval: false,
+        approvalChannels: ['EMAIL'],
+        description: 'VLE Field Operations, State Regional Hubs and Citizen Services',
+      },
+      {
+        id: 'dept-5',
+        code: 'DBA',
+        name: 'Database & Data Warehouse',
+        headName: 'Anil Rao',
+        headEmail: 'anil.rao@csc.gov.in',
+        headPhone: '+91 98221 44556',
+        description: 'High-availability RDBMS, Big Data Clusters & Analytics Warehouse',
+      },
+      {
+        id: 'dept-1',
+        code: 'PMU',
+        name: 'Project Management Unit',
+        headName: 'Sanjay Kumar',
+        headEmail: 'sanjay.kumar@csc.gov.in',
+        headPhone: '+91 98110 55667',
+        description: 'National E-Governance Project Planning and Delivery',
+      },
+      {
+        id: 'dept-6',
+        code: 'LEGAL',
+        name: 'Legal & Regulatory Compliance',
+        headName: 'Meenakshi Iyer',
+        headEmail: 'meenakshi.iyer@csc.gov.in',
+        headPhone: '+91 98300 77889',
+        description: 'Compliance, IT Act & CERT-In Regulatory Reporting',
+      },
+      {
+        id: 'dept-7',
+        code: 'HR',
+        name: 'Human Resource & Admin',
+        headName: 'Shalini Saxena',
+        headEmail: 'shalini.saxena@csc.gov.in',
+        headPhone: '+91 98400 99001',
+        description: 'Employee Lifecycle, Onboarding, and Corporate Admin',
+      },
     ];
     depts.forEach((d) => this.departments.set(d.id, d));
 
@@ -105,7 +202,7 @@ export class ITSMStorage {
     ];
     locs.forEach((l) => this.locations.set(l.id, l));
 
-    // 3. Users for All 10 Roles
+    // 3. Users for Roles
     const sampleUsers: User[] = [
       {
         id: 'usr-admin',
@@ -114,12 +211,54 @@ export class ITSMStorage {
         employeeCode: 'CSC-1001',
         role: 'ADMIN',
         phone: '+91 98112 34567',
-        departmentId: 'dept-3',
-        departmentName: 'Cloud Infrastructure & DC',
+        departmentId: 'dept-tech',
+        departmentName: 'Technology',
         locationId: 'loc-3',
         locationName: 'CSC Corporate HQ (Okhla)',
         isActive: true,
         createdAt: '2026-01-01T09:00:00Z',
+      },
+      {
+        id: 'usr-ciso',
+        email: 'ciso@csc.gov.in',
+        name: 'Dr. Amitav Sen',
+        employeeCode: 'CSC-CISO-01',
+        role: 'L3_SPECIALIST',
+        phone: '+91 98101 23456',
+        departmentId: 'dept-2',
+        departmentName: 'Cyber Security Operations (CSOC)',
+        locationId: 'loc-3',
+        locationName: 'CSC Corporate HQ (Okhla)',
+        isActive: true,
+        createdAt: '2026-01-02T09:00:00Z',
+      },
+      {
+        id: 'usr-infra-head',
+        email: 'infra.head@csc.gov.in',
+        name: 'Vikram Malhotra',
+        employeeCode: 'CSC-INFRA-01',
+        role: 'IT_MANAGER',
+        phone: '+91 98112 34567',
+        departmentId: 'dept-3',
+        departmentName: 'Cloud Infrastructure & DC',
+        locationId: 'loc-1',
+        locationName: 'National Data Centre (NDC)',
+        isActive: true,
+        createdAt: '2026-01-03T09:00:00Z',
+      },
+      {
+        id: 'usr-ops-mgr',
+        email: 'ops.manager@csc.gov.in',
+        name: 'Rajesh Kumar',
+        employeeCode: 'CSC-OPS-01',
+        role: 'IT_MANAGER',
+        phone: '+91 98118 77665',
+        departmentId: 'dept-4',
+        departmentName: 'State Operations & VLE Desk',
+        locationId: 'loc-3',
+        locationName: 'CSC Corporate HQ (Okhla)',
+        isActive: true,
+        createdAt: '2026-01-04T09:00:00Z',
       },
       {
         id: 'usr-mgr',
@@ -128,8 +267,8 @@ export class ITSMStorage {
         employeeCode: 'CSC-1045',
         role: 'IT_MANAGER',
         phone: '+91 98234 56789',
-        departmentId: 'dept-3',
-        departmentName: 'Cloud Infrastructure & DC',
+        departmentId: 'dept-tech',
+        departmentName: 'Technology',
         locationId: 'loc-1',
         locationName: 'National Data Centre (NDC)',
         isActive: true,
@@ -142,8 +281,8 @@ export class ITSMStorage {
         employeeCode: 'CSC-2104',
         role: 'SERVICE_DESK',
         phone: '+91 97118 99881',
-        departmentId: 'dept-3',
-        departmentName: 'Cloud Infrastructure & DC',
+        departmentId: 'dept-tech',
+        departmentName: 'Technology',
         locationId: 'loc-3',
         locationName: 'CSC Corporate HQ (Okhla)',
         isActive: true,
@@ -240,8 +379,8 @@ export class ITSMStorage {
         employeeCode: 'CSC-3510',
         role: 'EMPLOYEE',
         phone: '+91 97654 32109',
-        departmentId: 'dept-4',
-        departmentName: 'State Operations & VLE Desk',
+        departmentId: 'dept-tech',
+        departmentName: 'Technology',
         locationId: 'loc-4',
         locationName: 'Regional Operations Hub',
         isActive: true,
@@ -463,11 +602,103 @@ export class ITSMStorage {
     // 10. Service Catalog Items
     this.serviceCatalog = [
       {
-        id: 'cat-item-1',
+        id: 'cat-item-uat-srv',
+        code: 'SC-UAT-SRV',
+        title: 'UAT Server Provision',
+        category: 'Cloud & Infrastructure',
+        description: 'Provision isolated UAT / Staging virtual server with custom OS, compute sizing, and firewall DMZ routing.',
+        iconName: 'Server',
+        estimatedDelivery: '4 Hours',
+        defaultPriority: 'HIGH',
+        requiresApproval: true,
+        approvalStages: ['CISO Approval (WhatsApp/Email)', 'Infra Head Approval (WhatsApp/Email)', 'Operations Manager Assignment'],
+        fields: [
+          { id: 'serverName', label: 'Requested Hostname / VM Alias', type: 'text', required: true, placeholder: 'e.g. csc-uat-auth-app01' },
+          { id: 'vmSpecs', label: 'Compute Specifications', type: 'select', options: ['Small (2 vCPU, 8GB RAM, 80GB NVMe)', 'Medium (4 vCPU, 16GB RAM, 160GB NVMe)', 'Large (8 vCPU, 32GB RAM, 320GB NVMe)', 'Heavy Compute (16 vCPU, 64GB RAM, 1TB SSD)'], required: true },
+          { id: 'osType', label: 'Operating System Flavour', type: 'select', options: ['Rocky Linux 9 (Hardened)', 'Ubuntu 24.04 LTS Enterprise', 'Red Hat Enterprise Linux 9', 'Windows Server 2022 Datacenter'], required: true },
+          { id: 'networkZone', label: 'Target Network DMZ', type: 'select', options: ['UAT Trust Zone (10.120.32.0/24)', 'UAT Web DMZ (10.120.48.0/24)', 'UAT Isolated Database Subnet'], required: true },
+          { id: 'justification', label: 'Project & Testing Justification', type: 'textarea', required: true, placeholder: 'Testing milestone, load test schedule, and data privacy confirmation...' },
+        ],
+      },
+      {
+        id: 'cat-item-uat-acc',
+        code: 'SC-UAT-ACC',
+        title: 'UAT Access Request',
+        category: 'Security & Access',
+        description: 'Grant role-based credentials and SSH / Bastion / Portal access for UAT staging clusters and test databases.',
+        iconName: 'KeyRound',
+        estimatedDelivery: '2 Hours',
+        defaultPriority: 'MEDIUM',
+        requiresApproval: true,
+        approvalStages: ['CISO Approval (WhatsApp/Email)', 'Infra Head Approval (WhatsApp/Email)', 'Operations Manager Assignment'],
+        fields: [
+          { id: 'appName', label: 'Target System / Portal', type: 'select', options: ['Digital Seva UAT Portal', 'Aadhaar Auth UAT Engine', 'PMJAY Staging Microservices', 'Central Payment Gateway Sandbox'], required: true },
+          { id: 'accessPrivilege', label: 'Access Privilege Level', type: 'select', options: ['Read-Only QA Tester', 'Developer Deployment (SSH/Sudo)', 'Database Read-Write Access', 'Security Penetration Tester'], required: true },
+          { id: 'validDuration', label: 'Access Duration', type: 'select', options: ['7 Days (Sprint Testing)', '14 Days (UAT Cycle)', '30 Days (Release Candidate)', '90 Days (Long-term Project)'], required: true },
+          { id: 'justification', label: 'Business & Testing Need', type: 'textarea', required: true, placeholder: 'Specify sprint tickets or project requirements...' },
+        ],
+      },
+      {
+        id: 'cat-item-vpn',
+        code: 'SC-VPN-ACC',
+        title: 'VPN Access Request',
+        category: 'Network & Security',
+        description: 'Request enterprise SSL VPN tunnel with Multi-Factor Authentication (MFA) for secure remote subnet connectivity.',
+        iconName: 'ShieldCheck',
+        estimatedDelivery: '2 Hours',
+        defaultPriority: 'MEDIUM',
+        requiresApproval: true,
+        approvalStages: ['CISO Approval (WhatsApp/Email)', 'Infra Head Approval (WhatsApp/Email)', 'Operations Manager Assignment'],
+        fields: [
+          { id: 'subnets', label: 'Destination Data Centre / Subnets', type: 'select', options: ['National Data Centre (NDC New Delhi)', 'State Data Centre (SDC Hyderabad)', 'Regional Operations Subnets', 'All Enterprise Zones (Full Tunnel)'], required: true },
+          { id: 'duration', label: 'VPN Access Duration', type: 'select', options: ['1 Month', '3 Months', '6 Months', 'Permanent / Full-Time'], required: true },
+          { id: 'mfaMethod', label: 'MFA Device & Authentication Mode', type: 'select', options: ['CSC Mobile Authenticator App', 'SMS OTP on Registered Mobile', 'FIDO2 Hardware Token'], required: true },
+          { id: 'justification', label: 'Remote Work Business Justification', type: 'textarea', required: true, placeholder: 'State reasons requiring off-premise secure tunnel access...' },
+        ],
+      },
+      {
+        id: 'cat-item-email',
+        code: 'SC-EMAIL-ID',
+        title: 'Email ID Creation',
+        category: 'Identity & Communication',
+        description: 'Provision official @csc.gov.in mailbox, Active Directory identity, single sign-on, and calendar quota.',
+        iconName: 'Mail',
+        estimatedDelivery: '4 Hours',
+        defaultPriority: 'LOW',
+        requiresApproval: true,
+        approvalStages: ['CISO Approval (WhatsApp/Email)', 'Infra Head Approval (WhatsApp/Email)', 'Operations Manager Assignment'],
+        fields: [
+          { id: 'fullName', label: 'Employee Full Legal Name', type: 'text', required: true, placeholder: 'e.g. Ramesh Chandra' },
+          { id: 'desiredPrefix', label: 'Desired Email Prefix', type: 'text', required: true, placeholder: 'e.g. ramesh.chandra@csc.gov.in' },
+          { id: 'empCode', label: 'Employee Code / Staff ID', type: 'text', required: true, placeholder: 'e.g. CSC-4029' },
+          { id: 'department', label: 'Department / Unit', type: 'select', options: ['Technology', 'Cloud Infrastructure & DC', 'Cyber Security (CSOC)', 'State Operations & VLE Desk', 'Database & Data Warehouse', 'Project Management Unit', 'Legal & Compliance', 'Human Resource'], required: true },
+          { id: 'designation', label: 'Official Designation', type: 'text', required: true, placeholder: 'e.g. Lead DevOps Engineer' },
+        ],
+      },
+      {
+        id: 'cat-item-vm',
+        code: 'SC-VM-PROV',
+        title: 'Cloud VM / Compute Instance Provisioning',
+        category: 'Cloud & Infrastructure',
+        description: 'Provision high-throughput virtual machines or GPU nodes in CSC Private Cloud / VMware vSphere.',
+        iconName: 'Server',
+        estimatedDelivery: '1 Business Day',
+        defaultPriority: 'HIGH',
+        requiresApproval: true,
+        approvalStages: ['CISO Approval (WhatsApp/Email)', 'Infra Head Approval (WhatsApp/Email)', 'Operations Manager Assignment'],
+        fields: [
+          { id: 'vmSpecs', label: 'Compute Flavour', type: 'select', options: ['Standard (4 vCPU, 16GB RAM, 100GB)', 'High Memory (8 vCPU, 64GB RAM, 300GB)', 'High CPU (16 vCPU, 32GB RAM, 500GB)', 'AI / GPU Node (16 vCPU, 64GB RAM, NVIDIA A100)'], required: true },
+          { id: 'osType', label: 'Base OS Image', type: 'select', options: ['Rocky Linux 9', 'Ubuntu 24.04 LTS', 'Red Hat Enterprise Linux 9'], required: true },
+          { id: 'networkZone', label: 'Network DMZ / Zone', type: 'select', options: ['Internal Trust Zone', 'DMZ Web Tier', 'Database Isolated VLAN'], required: true },
+          { id: 'purpose', label: 'Project Justification', type: 'textarea', required: true },
+        ],
+      },
+      {
+        id: 'cat-item-laptop',
         code: 'SC-LAPTOP',
-        title: 'New Standard Laptop Allocation',
-        category: 'Hardware',
-        description: 'Request standard enterprise laptop (Core i7, 32GB RAM, 512GB NVMe SSD, TPM 2.0).',
+        title: 'New Hardware / Laptop Allocation',
+        category: 'Hardware & Assets',
+        description: 'Issue standard enterprise development workstation or lightweight corporate laptop with security encryption.',
         iconName: 'Laptop',
         estimatedDelivery: '3 Business Days',
         defaultPriority: 'MEDIUM',
@@ -476,79 +707,7 @@ export class ITSMStorage {
         fields: [
           { id: 'userRole', label: 'Employee Role / Designation', type: 'text', required: true, placeholder: 'e.g. Senior Software Engineer' },
           { id: 'osPreference', label: 'Operating System', type: 'select', options: ['Ubuntu Linux 24.04 LTS (Default)', 'Windows 11 Enterprise'], required: true },
-          { id: 'reason', label: 'Business Justification', type: 'textarea', required: true, placeholder: 'Reason for new laptop...' },
-        ],
-      },
-      {
-        id: 'cat-item-2',
-        code: 'SC-VPN',
-        title: 'Enterprise SSL VPN Access',
-        category: 'Network & Access',
-        description: 'Request secure remote access to CSC NDC/SDC internal network and subnets.',
-        iconName: 'ShieldCheck',
-        estimatedDelivery: '1 Business Day',
-        defaultPriority: 'MEDIUM',
-        requiresApproval: true,
-        approvalStages: ['Reporting Manager', 'Cyber Security CSOC'],
-        fields: [
-          { id: 'subnets', label: 'Required Subnet / Application Access', type: 'text', required: true, placeholder: 'e.g. 10.120.0.0/16 (VLE Microservices)' },
-          { id: 'durationMonths', label: 'Access Duration (Months)', type: 'select', options: ['1 Month', '3 Months', '6 Months', 'Permanent'], required: true },
-          { id: 'justification', label: 'Business Need for Remote Access', type: 'textarea', required: true },
-        ],
-      },
-      {
-        id: 'cat-item-3',
-        code: 'SC-PROD-ACC',
-        title: 'Production / UAT Server Access Request',
-        category: 'Security & Access',
-        description: 'Time-bound privileged SSH / Database access for deployment or emergency diagnostics.',
-        iconName: 'KeyRound',
-        estimatedDelivery: '4 Hours',
-        defaultPriority: 'HIGH',
-        requiresApproval: true,
-        approvalStages: ['Reporting Manager', 'IT Operations Manager', 'Cyber Security (CSOC)'],
-        fields: [
-          { id: 'appName', label: 'Application / System', type: 'select', options: ['Digital Seva Portal', 'VLE Aadhaar Service', 'PMJAY Enrolment Cluster', 'Central Payment Gateway'], required: true },
-          { id: 'environment', label: 'Target Environment', type: 'select', options: ['PRODUCTION', 'UAT', 'DR', 'STAGING'], required: true },
-          { id: 'accessType', label: 'Access Privilege Level', type: 'select', options: ['READ_ONLY', 'READ_WRITE', 'ADMIN / SUDO', 'DATABASE_ACCESS'], required: true },
-          { id: 'validFrom', label: 'Access Start Date & Time', type: 'date', required: true },
-          { id: 'validTo', label: 'Access End Date & Time', type: 'date', required: true },
-          { id: 'justification', label: 'Detailed Justification & RFC reference', type: 'textarea', required: true },
-        ],
-      },
-      {
-        id: 'cat-item-4',
-        code: 'SC-EMAIL',
-        title: 'Official @csc.gov.in Email Provisioning',
-        category: 'Identity',
-        description: 'Request official email account with enterprise mailbox quota and calendar.',
-        iconName: 'Mail',
-        estimatedDelivery: '1 Business Day',
-        defaultPriority: 'LOW',
-        requiresApproval: true,
-        approvalStages: ['HR Approval', 'IT Service Desk'],
-        fields: [
-          { id: 'fullName', label: 'Full Official Name', type: 'text', required: true },
-          { id: 'empCode', label: 'Employee ID', type: 'text', required: true },
-          { id: 'dept', label: 'Department', type: 'text', required: true },
-        ],
-      },
-      {
-        id: 'cat-item-5',
-        code: 'SC-VM',
-        title: 'Cloud VM / Container Provisioning',
-        category: 'Infrastructure',
-        description: 'Provision virtual machine in CSC Private Cloud (OpenStack / VMware vSphere).',
-        iconName: 'Server',
-        estimatedDelivery: '2 Business Days',
-        defaultPriority: 'HIGH',
-        requiresApproval: true,
-        approvalStages: ['Project Manager', 'Infrastructure Lead'],
-        fields: [
-          { id: 'vmSpecs', label: 'Compute Flavour', type: 'select', options: ['Small (2 vCPU, 4GB RAM, 50GB)', 'Medium (4 vCPU, 16GB RAM, 150GB)', 'Large (8 vCPU, 32GB RAM, 500GB)', 'GPU Compute Node (16 vCPU, 64GB RAM, NVIDIA A100)'], required: true },
-          { id: 'osType', label: 'Base OS Image', type: 'select', options: ['Rocky Linux 9', 'Ubuntu 24.04 LTS', 'Red Hat Enterprise Linux 9'], required: true },
-          { id: 'networkZone', label: 'Network DMZ / Zone', type: 'select', options: ['Internal Trust Zone', 'DMZ Web Tier', 'Database Isolated VLAN'], required: true },
-          { id: 'purpose', label: 'Project Justification', type: 'textarea', required: true },
+          { id: 'reason', label: 'Business Justification', type: 'textarea', required: true, placeholder: 'Reason for hardware allocation...' },
         ],
       },
     ];
@@ -1580,6 +1739,12 @@ export class ITSMStorage {
     const resolutionDue = new Date(now.getTime() + slaDef.resolveMinutes * 60 * 1000);
 
     const asset = input.assetId ? this.assets.get(input.assetId) : undefined;
+    const dept = input.departmentId ? this.departments.get(input.departmentId) : undefined;
+    const isTechOrDual =
+      (dept && (dept.requiresDualApproval || dept.code === 'TECH' || dept.name.toLowerCase().includes('tech'))) ||
+      (!dept && (requester.departmentName?.toLowerCase().includes('tech') || catName.toLowerCase().includes('server') || catName.toLowerCase().includes('access') || catName.toLowerCase().includes('vpn')));
+
+    const isServiceRequest = input.type === 'SERVICE_REQUEST' || input.type === 'ACCESS_REQUEST';
 
     const newTicket: Ticket = {
       id,
@@ -1587,7 +1752,10 @@ export class ITSMStorage {
       subject: input.subject,
       description: input.description,
       type: input.type || 'INCIDENT',
-      status: 'NEW',
+      status: isServiceRequest && isTechOrDual ? 'AWAITING_APPROVAL' : 'NEW',
+      routingState: isServiceRequest && isTechOrDual ? 'AWAITING_DUAL_APPROVAL' : 'ASSIGNED_TO_TEAM',
+      whatsappNotificationsDispatched: isServiceRequest && isTechOrDual,
+      emailNotificationsDispatched: isServiceRequest && isTechOrDual,
       priority,
       impact,
       urgency,
@@ -1595,16 +1763,16 @@ export class ITSMStorage {
       requesterName: requester.name,
       requesterEmail: requester.email,
       requesterPhone: requester.phone,
-      departmentId: input.departmentId || requester.departmentId,
-      departmentName: requester.departmentName,
+      departmentId: dept?.id || input.departmentId || requester.departmentId,
+      departmentName: dept?.name || requester.departmentName,
       locationId: input.locationId || requester.locationId,
       locationName: requester.locationName,
       categoryName: catName,
       subcategoryName: input.subcategoryName,
-      assignmentGroupId: assignedGroup?.id,
-      assignmentGroupName: assignedGroup?.name,
-      assignedToId: assignedTech?.id,
-      assignedToName: assignedTech?.name,
+      assignmentGroupId: isServiceRequest && isTechOrDual ? undefined : assignedGroup?.id,
+      assignmentGroupName: isServiceRequest && isTechOrDual ? undefined : assignedGroup?.name,
+      assignedToId: isServiceRequest && isTechOrDual ? undefined : assignedTech?.id,
+      assignedToName: isServiceRequest && isTechOrDual ? undefined : assignedTech?.name,
       assetId: asset?.id,
       assetTag: asset?.assetTag,
       assetName: asset?.name,
@@ -1636,7 +1804,41 @@ export class ITSMStorage {
       updatedAt: now.toISOString(),
     };
 
-    if (assignedGroup) {
+    if (isServiceRequest && isTechOrDual) {
+      newTicket.approvals = [
+        {
+          id: `appr-${Date.now()}-ciso`,
+          stageNumber: 1,
+          roleRequired: 'CISO',
+          approverName: dept?.cisoName || 'Dr. Amitav Sen (CISO)',
+          approverEmail: dept?.cisoEmail || 'ciso@csc.gov.in',
+          approverPhone: dept?.cisoPhone || '+91 98101 23456',
+          channel: 'ALL',
+          status: 'PENDING',
+          comments: 'Awaiting CISO approval via Email / WhatsApp (+91 98101 23456)',
+        },
+        {
+          id: `appr-${Date.now()}-infra`,
+          stageNumber: 2,
+          roleRequired: 'INFRA_HEAD',
+          approverName: dept?.infraHeadName || 'Vikram Malhotra (Infra Head)',
+          approverEmail: dept?.infraHeadEmail || 'infra.head@csc.gov.in',
+          approverPhone: dept?.infraHeadPhone || '+91 98112 34567',
+          channel: 'ALL',
+          status: 'PENDING',
+          comments: 'Awaiting Infra Head approval via Email / WhatsApp (+91 98112 34567)',
+        },
+      ];
+
+      newTicket.timeline?.push({
+        id: `th-${Date.now()}-dual-dispatch`,
+        ticketId: id,
+        userName: 'CSC Auto-Workflow Engine',
+        action: 'APPROVAL_DISPATCHED',
+        comment: `Automated approval alerts sent to CISO (${dept?.cisoName || 'Dr. Amitav Sen'}, ${dept?.cisoPhone || '+91 98101 23456'}) and Infra Head (${dept?.infraHeadName || 'Vikram Malhotra'}, ${dept?.infraHeadPhone || '+91 98112 34567'}) via Email & WhatsApp.`,
+        createdAt: new Date(now.getTime() + 500).toISOString(),
+      });
+    } else if (assignedGroup) {
       newTicket.timeline?.push({
         id: `th-${Date.now()}-2`,
         ticketId: id,
@@ -1657,11 +1859,352 @@ export class ITSMStorage {
       module: 'TICKETS',
       objectType: 'Ticket',
       objectId: ticketNumber,
-      newValue: `Subject: ${input.subject} | Priority: ${priority} | Group: ${assignedGroup?.name || 'None'}`,
+      newValue: `Subject: ${input.subject} | Priority: ${priority} | Workflow: ${isServiceRequest && isTechOrDual ? 'Dual CISO+Infra Approval' : assignedGroup?.name || 'Standard'}`,
       ipAddress: input.clientIp,
     });
 
     return newTicket;
+  }
+
+  // --- Multi-Channel Dual Approval & Operations Routing Workflow ---
+  public approveTicketStep(
+    ticketId: string,
+    roleOrStepId: string,
+    comments?: string,
+    channel: 'WHATSAPP' | 'EMAIL' | 'PORTAL' = 'PORTAL',
+    actorUser?: User
+  ): Ticket | undefined {
+    const t = this.tickets.get(ticketId);
+    if (!t) return undefined;
+
+    const now = new Date().toISOString();
+    t.approvals = t.approvals || [];
+    
+    // Find matching step by ID or roleRequired
+    const step = t.approvals.find(
+      (a) => a.id === roleOrStepId || a.roleRequired === roleOrStepId || (a.roleRequired && roleOrStepId.toUpperCase().includes(a.roleRequired))
+    );
+
+    if (step) {
+      step.status = 'APPROVED';
+      step.approverId = actorUser?.id;
+      if (actorUser) {
+        step.approverName = actorUser.name;
+      }
+      step.comments = comments || `Approved via ${channel} OK confirmation.`;
+      step.actionedAt = now;
+      step.actionChannel = channel;
+    }
+
+    const allApproved = t.approvals.length > 0 && t.approvals.every((a) => a.status === 'APPROVED');
+    
+    t.timeline = t.timeline || [];
+    t.timeline.push({
+      id: `th-${Date.now()}`,
+      ticketId: t.id,
+      userName: step?.approverName || actorUser?.name || 'Authorized Approver',
+      action: 'APPROVED_STEP',
+      comment: `Approval step (${step?.roleRequired || 'Stage'}) verified via ${channel}. "${comments || 'OK - Approved'}"`,
+      createdAt: now,
+    });
+
+    if (allApproved) {
+      // Both CISO and Infra Head put OK: Auto route ticket to Operations Manager
+      t.routingState = 'PENDING_OPS_ASSIGNMENT';
+      t.status = 'PENDING';
+      
+      const dept = t.departmentId ? this.departments.get(t.departmentId) : undefined;
+      const opsManagerName = dept?.opsManagerName || 'Rajesh Kumar (Operations Manager)';
+      const opsManagerEmail = dept?.opsManagerEmail || 'ops.manager@csc.gov.in';
+
+      t.timeline.push({
+        id: `th-${Date.now()}-ops-route`,
+        ticketId: t.id,
+        userName: 'CSC Auto-Workflow Engine',
+        action: 'ROUTED_TO_OPERATIONS',
+        comment: `🎉 Both CISO & Infra Head approvals received! Ticket automatically routed to ${opsManagerName} (${opsManagerEmail}) for concern technical team assignment.`,
+        createdAt: new Date().toISOString(),
+      });
+
+      this.addAuditLog({
+        userId: actorUser?.id,
+        userName: actorUser?.name || 'System Workflow',
+        userRole: 'ADMIN',
+        action: 'TICKET_DUAL_APPROVED',
+        module: 'TICKETS',
+        objectType: 'Ticket',
+        objectId: t.ticketNumber,
+        newValue: `Dual approval completed. Routed to Operations Manager: ${opsManagerName}`,
+      });
+    }
+
+    t.updatedAt = now;
+    return t;
+  }
+
+  public assignConcernTeam(
+    ticketId: string,
+    input: {
+      groupId: string;
+      technicianId?: string;
+      opsInstructions?: string;
+    },
+    actorUser?: User
+  ): Ticket | undefined {
+    const t = this.tickets.get(ticketId);
+    if (!t) return undefined;
+
+    const group = this.groups.get(input.groupId);
+    const tech = input.technicianId ? this.users.get(input.technicianId) : undefined;
+    const now = new Date().toISOString();
+
+    if (group) {
+      t.assignmentGroupId = group.id;
+      t.assignmentGroupName = group.name;
+    }
+    if (tech) {
+      t.assignedToId = tech.id;
+      t.assignedToName = tech.name;
+    } else {
+      t.assignedToId = undefined;
+      t.assignedToName = undefined;
+    }
+
+    t.status = 'ASSIGNED';
+    t.routingState = 'ASSIGNED_TO_TEAM';
+    t.updatedAt = now;
+
+    t.timeline = t.timeline || [];
+    t.timeline.push({
+      id: `th-${Date.now()}-concern-assigned`,
+      ticketId: t.id,
+      userName: actorUser?.name || 'Operations Manager',
+      action: 'ASSIGNED_CONCERN_TEAM',
+      comment: `Operations Manager assigned ticket to Concern Team: [${group?.name || 'Team'}] / [${tech?.name || 'Group Pool'}]. ${input.opsInstructions ? `Instructions: "${input.opsInstructions}"` : ''}`,
+      createdAt: now,
+    });
+
+    if (input.opsInstructions) {
+      t.workNotes = t.workNotes || [];
+      t.workNotes.push({
+        id: `wn-${Date.now()}`,
+        ticketId: t.id,
+        authorId: actorUser?.id || 'usr-ops-mgr',
+        authorName: actorUser?.name || 'Operations Manager',
+        authorRole: 'IT_MANAGER',
+        content: `[Operations Assignment Note]: ${input.opsInstructions}`,
+        isInternal: true,
+        createdAt: now,
+      });
+      t.workNotesCount = t.workNotes.length;
+    }
+
+    this.addAuditLog({
+      userId: actorUser?.id,
+      userName: actorUser?.name || 'Operations Manager',
+      userRole: 'IT_MANAGER',
+      action: 'OPS_ASSIGNED_TEAM',
+      module: 'TICKETS',
+      objectType: 'Ticket',
+      objectId: t.ticketNumber,
+      newValue: `Assigned to ${group?.name || 'Group'} / ${tech?.name || 'Unassigned'}`,
+    });
+
+    return t;
+  }
+
+  // --- Admin CRUD Management Methods ---
+  public createDepartment(dept: Omit<Department, 'id'>): Department {
+    const id = `dept-${Date.now()}`;
+    const newDept: Department = { ...dept, id };
+    this.departments.set(id, newDept);
+    this.addAuditLog({
+      userName: 'System Administrator',
+      userRole: 'ADMIN',
+      action: 'DEPARTMENT_CREATED',
+      module: 'ADMIN',
+      objectType: 'Department',
+      objectId: id,
+      newValue: `${newDept.name} (${newDept.code})`,
+    });
+    return newDept;
+  }
+
+  public updateDepartment(id: string, updates: Partial<Department>): Department | undefined {
+    const dept = this.departments.get(id);
+    if (!dept) return undefined;
+    const updated = { ...dept, ...updates };
+    this.departments.set(id, updated);
+    this.addAuditLog({
+      userName: 'System Administrator',
+      userRole: 'ADMIN',
+      action: 'DEPARTMENT_UPDATED',
+      module: 'ADMIN',
+      objectType: 'Department',
+      objectId: id,
+      newValue: `Updated ${updated.name}`,
+    });
+    return updated;
+  }
+
+  public deleteDepartment(id: string): boolean {
+    const existed = this.departments.delete(id);
+    if (existed) {
+      this.addAuditLog({
+        userName: 'System Administrator',
+        userRole: 'ADMIN',
+        action: 'DEPARTMENT_DELETED',
+        module: 'ADMIN',
+        objectType: 'Department',
+        objectId: id,
+      });
+    }
+    return existed;
+  }
+
+  public createServiceCatalogItem(item: Omit<ServiceCatalogItem, 'id'>): ServiceCatalogItem {
+    const id = `cat-item-${Date.now()}`;
+    const newItem: ServiceCatalogItem = { ...item, id };
+    this.serviceCatalog.push(newItem);
+    this.addAuditLog({
+      userName: 'System Administrator',
+      userRole: 'ADMIN',
+      action: 'CATALOG_ITEM_CREATED',
+      module: 'ADMIN',
+      objectType: 'ServiceCatalogItem',
+      objectId: id,
+      newValue: `${newItem.title} (${newItem.code})`,
+    });
+    return newItem;
+  }
+
+  public updateServiceCatalogItem(id: string, updates: Partial<ServiceCatalogItem>): ServiceCatalogItem | undefined {
+    const idx = this.serviceCatalog.findIndex((i) => i.id === id);
+    if (idx === -1) return undefined;
+    const updated = { ...this.serviceCatalog[idx], ...updates };
+    this.serviceCatalog[idx] = updated;
+    this.addAuditLog({
+      userName: 'System Administrator',
+      userRole: 'ADMIN',
+      action: 'CATALOG_ITEM_UPDATED',
+      module: 'ADMIN',
+      objectType: 'ServiceCatalogItem',
+      objectId: id,
+      newValue: `Updated ${updated.title}`,
+    });
+    return updated;
+  }
+
+  public deleteServiceCatalogItem(id: string): boolean {
+    const idx = this.serviceCatalog.findIndex((i) => i.id === id);
+    if (idx === -1) return false;
+    this.serviceCatalog.splice(idx, 1);
+    this.addAuditLog({
+      userName: 'System Administrator',
+      userRole: 'ADMIN',
+      action: 'CATALOG_ITEM_DELETED',
+      module: 'ADMIN',
+      objectType: 'ServiceCatalogItem',
+      objectId: id,
+    });
+    return true;
+  }
+
+  public createGroup(group: Omit<AssignmentGroup, 'id'>): AssignmentGroup {
+    const id = `grp-${Date.now()}`;
+    const newGroup: AssignmentGroup = { ...group, id };
+    this.groups.set(id, newGroup);
+    this.addAuditLog({
+      userName: 'System Administrator',
+      userRole: 'ADMIN',
+      action: 'GROUP_CREATED',
+      module: 'ADMIN',
+      objectType: 'AssignmentGroup',
+      objectId: id,
+      newValue: newGroup.name,
+    });
+    return newGroup;
+  }
+
+  public updateGroup(id: string, updates: Partial<AssignmentGroup>): AssignmentGroup | undefined {
+    const grp = this.groups.get(id);
+    if (!grp) return undefined;
+    const updated = { ...grp, ...updates };
+    this.groups.set(id, updated);
+    this.addAuditLog({
+      userName: 'System Administrator',
+      userRole: 'ADMIN',
+      action: 'GROUP_UPDATED',
+      module: 'ADMIN',
+      objectType: 'AssignmentGroup',
+      objectId: id,
+      newValue: `Updated ${updated.name}`,
+    });
+    return updated;
+  }
+
+  public deleteGroup(id: string): boolean {
+    const existed = this.groups.delete(id);
+    if (existed) {
+      this.addAuditLog({
+        userName: 'System Administrator',
+        userRole: 'ADMIN',
+        action: 'GROUP_DELETED',
+        module: 'ADMIN',
+        objectType: 'AssignmentGroup',
+        objectId: id,
+      });
+    }
+    return existed;
+  }
+
+  public deleteUser(id: string): boolean {
+    const existed = this.users.delete(id);
+    if (existed) {
+      this.addAuditLog({
+        userName: 'System Administrator',
+        userRole: 'ADMIN',
+        action: 'USER_DELETED',
+        module: 'ADMIN',
+        objectType: 'User',
+        objectId: id,
+      });
+    }
+    return existed;
+  }
+
+  public updateSLADefinition(priority: Priority, updates: Partial<SLADefinition>): SLADefinition | undefined {
+    const sla = this.slaDefinitions.get(priority);
+    if (!sla) return undefined;
+    const updated = { ...sla, ...updates };
+    this.slaDefinitions.set(priority, updated);
+    this.addAuditLog({
+      userName: 'System Administrator',
+      userRole: 'ADMIN',
+      action: 'SLA_UPDATED',
+      module: 'ADMIN',
+      objectType: 'SLADefinition',
+      objectId: priority,
+      newValue: `Resolve: ${updated.resolveMinutes}m, Response: ${updated.responseMinutes}m`,
+    });
+    return updated;
+  }
+
+  public updateNotificationTemplate(id: string, updates: Partial<NotificationTemplate>): NotificationTemplate | undefined {
+    const idx = this.notificationTemplates.findIndex((n) => n.id === id);
+    if (idx === -1) return undefined;
+    const updated = { ...this.notificationTemplates[idx], ...updates };
+    this.notificationTemplates[idx] = updated;
+    this.addAuditLog({
+      userName: 'System Administrator',
+      userRole: 'ADMIN',
+      action: 'TEMPLATE_UPDATED',
+      module: 'ADMIN',
+      objectType: 'NotificationTemplate',
+      objectId: id,
+      newValue: `Updated ${updated.event} template`,
+    });
+    return updated;
   }
 
   public assignTicket(ticketId: string, groupId?: string, technicianId?: string, actorUser?: User): Ticket | undefined {

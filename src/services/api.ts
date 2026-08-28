@@ -152,6 +152,55 @@ export const api = {
     return res.json();
   },
 
+  async approveTicketStep(
+    id: string,
+    data: {
+      roleOrStepId?: string;
+      roleRequired?: string;
+      comments?: string;
+      channel?: 'EMAIL' | 'WHATSAPP' | 'PORTAL';
+      channelUsed?: 'EMAIL' | 'WHATSAPP' | 'PORTAL';
+    },
+    userId?: string
+  ): Promise<{ success: boolean; ticket: Ticket }> {
+    const payload = {
+      roleOrStepId: data.roleOrStepId || data.roleRequired,
+      channel: data.channel || data.channelUsed || 'WHATSAPP',
+      comments: data.comments,
+    };
+    const res = await fetch(`/api/tickets/${id}/approve-step`, {
+      method: 'POST',
+      headers: getHeaders(userId),
+      body: JSON.stringify(payload),
+    });
+    return res.json();
+  },
+
+  async assignConcernTeam(
+    id: string,
+    data: {
+      groupId?: string;
+      assignedGroupId?: string;
+      assignedGroup?: string;
+      technicianId?: string;
+      opsInstructions?: string;
+      comments?: string;
+    },
+    userId?: string
+  ): Promise<{ success: boolean; ticket: Ticket }> {
+    const payload = {
+      groupId: data.groupId || data.assignedGroupId,
+      technicianId: data.technicianId,
+      opsInstructions: data.opsInstructions || data.comments || (data.assignedGroup ? `Assigned to ${data.assignedGroup}` : undefined),
+    };
+    const res = await fetch(`/api/tickets/${id}/assign-concern-team`, {
+      method: 'POST',
+      headers: getHeaders(userId),
+      body: JSON.stringify(payload),
+    });
+    return res.json();
+  },
+
   async updateTicketStatus(
     id: string,
     data: { status: TicketStatus; comment?: string },
@@ -349,6 +398,119 @@ export const api = {
   async createAdminUser(data: any): Promise<{ success: boolean; user: User }> {
     const res = await fetch('/api/admin/users', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+
+  async updateAdminUser(id: string, data: any): Promise<{ success: boolean; user: User }> {
+    const res = await fetch(`/api/admin/users/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+
+  async deleteAdminUser(id: string): Promise<{ success: boolean }> {
+    const res = await fetch(`/api/admin/users/${id}`, {
+      method: 'DELETE',
+    });
+    return res.json();
+  },
+
+  // Department Admin CRUD
+  async createDepartment(data: any): Promise<{ success: boolean; department: any }> {
+    const res = await fetch('/api/admin/departments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+
+  async updateDepartment(id: string, data: any): Promise<{ success: boolean; department: any }> {
+    const res = await fetch(`/api/admin/departments/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+
+  async deleteDepartment(id: string): Promise<{ success: boolean }> {
+    const res = await fetch(`/api/admin/departments/${id}`, {
+      method: 'DELETE',
+    });
+    return res.json();
+  },
+
+  // Service Catalog Admin CRUD
+  async createServiceCatalogItem(data: any): Promise<{ success: boolean; item: any }> {
+    const res = await fetch('/api/admin/service-catalog', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+
+  async updateServiceCatalogItem(id: string, data: any): Promise<{ success: boolean; item: any }> {
+    const res = await fetch(`/api/admin/service-catalog/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+
+  async deleteServiceCatalogItem(id: string): Promise<{ success: boolean }> {
+    const res = await fetch(`/api/admin/service-catalog/${id}`, {
+      method: 'DELETE',
+    });
+    return res.json();
+  },
+
+  // Assignment Groups Admin CRUD
+  async createGroup(data: any): Promise<{ success: boolean; group: any }> {
+    const res = await fetch('/api/admin/groups', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+
+  async updateGroup(id: string, data: any): Promise<{ success: boolean; group: any }> {
+    const res = await fetch(`/api/admin/groups/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+
+  async deleteGroup(id: string): Promise<{ success: boolean }> {
+    const res = await fetch(`/api/admin/groups/${id}`, {
+      method: 'DELETE',
+    });
+    return res.json();
+  },
+
+  // SLA & Notification Template updates
+  async updateSLA(priority: string, data: any): Promise<{ success: boolean; sla: any }> {
+    const res = await fetch(`/api/admin/sla/${priority}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+
+  async updateNotificationTemplate(id: string, data: any): Promise<{ success: boolean; template: any }> {
+    const res = await fetch(`/api/admin/notification-templates/${id}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });

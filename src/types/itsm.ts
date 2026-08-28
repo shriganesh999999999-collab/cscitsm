@@ -93,6 +93,20 @@ export interface Department {
   code: string;
   name: string;
   headName?: string;
+  headEmail?: string;
+  headPhone?: string;
+  cisoName?: string;
+  cisoEmail?: string;
+  cisoPhone?: string;
+  infraHeadName?: string;
+  infraHeadEmail?: string;
+  infraHeadPhone?: string;
+  opsManagerName?: string;
+  opsManagerEmail?: string;
+  opsManagerPhone?: string;
+  requiresDualApproval?: boolean; // e.g. CISO + Infra Head
+  approvalChannels?: ('EMAIL' | 'WHATSAPP')[];
+  description?: string;
 }
 
 export interface Location {
@@ -177,12 +191,17 @@ export interface TicketHistory {
 export interface ApprovalStep {
   id: string;
   stageNumber: number;
-  roleRequired: UserRole;
+  roleRequired: string; // UserRole | 'CISO' | 'INFRA_HEAD' | 'OPS_MANAGER' | 'HOD'
   approverId?: string;
   approverName?: string;
+  approverEmail?: string;
+  approverPhone?: string;
+  channel?: 'EMAIL' | 'WHATSAPP' | 'PORTAL' | 'ALL';
   status: ApprovalStatus;
   comments?: string;
   actionedAt?: string;
+  actionChannel?: 'EMAIL' | 'WHATSAPP' | 'PORTAL';
+  approvalToken?: string;
 }
 
 export interface Ticket {
@@ -226,6 +245,14 @@ export interface Ticket {
   problemId?: string;
   changeId?: string;
 
+  // Department & Multi-channel Routing State
+  routingState?: 'AWAITING_DUAL_APPROVAL' | 'PENDING_OPS_ASSIGNMENT' | 'ASSIGNED_TO_TEAM' | 'COMPLETED';
+  serviceCatalogItemId?: string;
+  serviceCatalogItemCode?: string;
+  customFormData?: Record<string, string>;
+  whatsappNotificationsDispatched?: boolean;
+  emailNotificationsDispatched?: boolean;
+
   // SLA tracking
   responseDueDate?: string;
   respondedAt?: string;
@@ -249,6 +276,7 @@ export interface Ticket {
   attachmentsCount?: number;
 
   comments?: TicketComment[];
+  workNotes?: TicketComment[];
   tasks?: TicketTask[];
   attachments?: TicketAttachment[];
   timeline?: TicketHistory[];

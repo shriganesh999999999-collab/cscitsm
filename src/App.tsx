@@ -43,6 +43,7 @@ export default function App() {
 
   // Core Data State
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [catalogItems, setCatalogItems] = useState<ServiceCatalogItem[]>([]);
   const [accessRequests, setAccessRequests] = useState<AccessRequest[]>([]);
@@ -66,6 +67,7 @@ export default function App() {
       const [
         meRes,
         ticketsRes,
+        deptRes,
         metricsRes,
         catalogRes,
         accessRes,
@@ -80,6 +82,7 @@ export default function App() {
       ] = await Promise.all([
         api.getMe(userId),
         api.getTickets(),
+        api.getDepartments(),
         api.getDashboardMetrics(),
         api.getServiceCatalog(),
         api.getAccessRequests(),
@@ -95,6 +98,7 @@ export default function App() {
 
       if (meRes?.user) setCurrentUser(meRes.user);
       if (ticketsRes?.tickets) setTickets(ticketsRes.tickets);
+      if (deptRes?.departments) setDepartments(deptRes.departments);
       if (metricsRes?.metrics) setMetrics(metricsRes.metrics);
       if (catalogRes?.items) setCatalogItems(catalogRes.items);
       if (accessRes?.accessRequests) setAccessRequests(accessRes.accessRequests);
@@ -235,6 +239,27 @@ export default function App() {
 
   const handleRejectAccessRequest = async (id: string, comments: string) => {
     await api.rejectAccessRequest(id, { comments }, currentUser?.id);
+    await loadAllData(currentUser?.id);
+  };
+
+  // Dual Approval Step & Operations Team Assignment
+  const handleApproveTicketStep = async (
+    ticketId: string,
+    roleRequired: string,
+    channelUsed: 'EMAIL' | 'WHATSAPP',
+    comments?: string
+  ) => {
+    await api.approveTicketStep(ticketId, { roleRequired, channelUsed, comments }, currentUser?.id);
+    await loadAllData(currentUser?.id);
+  };
+
+  const handleAssignOpsTeam = async (
+    ticketId: string,
+    assignedGroupId: string,
+    assignedGroup: string,
+    comments?: string
+  ) => {
+    await api.assignConcernTeam(ticketId, { assignedGroupId, assignedGroup, comments }, currentUser?.id);
     await loadAllData(currentUser?.id);
   };
 
@@ -399,11 +424,21 @@ export default function App() {
           {activeView === 'catalog' && (
             <ServiceCatalogView
               catalogItems={catalogItems}
+              departments={departments}
               currentUser={currentUser}
               onRequestItem={async (data) => {
-                await handleCreateTicketSubmit(data);
+                const created = await handleCreateTicketSubmit(data);
+                return created;
               }}
               onOpenAccessRequests={() => setActiveView('access-requests')}
+              onViewTicket={(ticketId) => {
+                const found = tickets.find((t) => t.id === ticketId);
+                if (found) {
+                  setSelectedTicket(found);
+                } else {
+                  setActiveView('tickets');
+                }
+              }}
             />
           )}
 
@@ -463,9 +498,13 @@ export default function App() {
             <ApprovalsPortalView
               accessRequests={accessRequests}
               changes={changes}
+              tickets={tickets}
+              groups={groups}
               currentUser={currentUser}
               onApproveAccess={handleApproveAccessRequest}
               onRejectAccess={handleRejectAccessRequest}
+              onApproveTicketStep={handleApproveTicketStep}
+              onAssignOpsTeam={handleAssignOpsTeam}
             />
           )}
 
@@ -490,9 +529,13 @@ export default function App() {
           {activeView === 'admin' && (
             <AdminPortalView
               users={adminUsers}
+              departments={departments}
+              catalogItems={catalogItems}
+              groups={groups}
               currentUser={currentUser}
               onResetDemo={handleResetDemo}
               onCreateUser={handleCreateAdminUser}
+              onRefreshData={() => loadAllData(currentUser.id)}
             />
           )}
         </main>
