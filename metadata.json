@@ -1,6 +1,6 @@
 {
-  "name": "CSC ITSM",
-  "description": "Enterprise IT Service Management & Ticketing Portal for CSC e-Governance Services India Ltd.",
+  "name": "CSCSPV",
+  "description": "IT Service Management & Ticketing Portal for CSCSPV",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

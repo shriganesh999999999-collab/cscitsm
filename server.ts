@@ -26,8 +26,8 @@ async function startServer() {
   app.get('/api/health', (req: Request, res: Response) => {
     res.json({
       status: 'HEALTHY',
-      service: 'CSC ITSM Enterprise API Server',
-      organization: 'CSC e-Governance Services India Ltd.',
+      service: 'CSCSPV Service Portal Server',
+      organization: 'CSCSPV',
       timestamp: new Date().toISOString(),
       version: '1.0.0-enterprise',
     });
@@ -679,14 +679,14 @@ async function startServer() {
 
   app.post('/api/admin/reset-demo', (req: Request, res: Response) => {
     itsmStorage.seedInitialData();
-    res.json({ success: true, message: 'CSC ITSM Demo Database successfully re-seeded with official records.' });
+    res.json({ success: true, message: 'CSCSPV Database successfully re-seeded with official records.' });
   });
 
   // Explicit JSON 404 handler for any unhandled /api/* routes so they NEVER fall through to HTML SPA
   app.all('/api/*', (req: Request, res: Response) => {
     res.status(404).json({
       error: `API endpoint not found: ${req.method} ${req.path}`,
-      service: 'CSC ITSM Enterprise API Server',
+      service: 'CSCSPV Service Portal Server',
     });
   });
 
@@ -698,7 +698,7 @@ async function startServer() {
     }
     res.status(err.status || 500).json({
       error: err?.message || 'An unexpected internal server error occurred.',
-      service: 'CSC ITSM Enterprise API Server',
+      service: 'CSCSPV Service Portal Server',
     });
   });
 
@@ -719,7 +719,7 @@ async function startServer() {
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`=======================================================`);
-    console.log(` CSC e-Governance Services India Ltd. - CSC ITSM Portal`);
+    console.log(` CSCSPV - IT Service Management Portal`);
     console.log(` Server running on http://0.0.0.0:${PORT}`);
     console.log(` Mode: ${process.env.NODE_ENV || 'development'}`);
     console.log(`=======================================================`);
@@ -727,6 +727,6 @@ async function startServer() {
 }
 
 startServer().catch((err) => {
-  console.error('Failed to start CSC ITSM Server:', err);
+  console.error('Failed to start CSCSPV Server:', err);
   process.exit(1);
 });
