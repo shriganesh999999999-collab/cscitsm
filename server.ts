@@ -682,6 +682,26 @@ async function startServer() {
     res.json({ success: true, message: 'CSC ITSM Demo Database successfully re-seeded with official records.' });
   });
 
+  // Explicit JSON 404 handler for any unhandled /api/* routes so they NEVER fall through to HTML SPA
+  app.all('/api/*', (req: Request, res: Response) => {
+    res.status(404).json({
+      error: `API endpoint not found: ${req.method} ${req.path}`,
+      service: 'CSC ITSM Enterprise API Server',
+    });
+  });
+
+  // Global API error handling middleware
+  app.use((err: any, req: Request, res: Response, next: any) => {
+    console.error('Unhandled API Error:', err);
+    if (res.headersSent) {
+      return next(err);
+    }
+    res.status(err.status || 500).json({
+      error: err?.message || 'An unexpected internal server error occurred.',
+      service: 'CSC ITSM Enterprise API Server',
+    });
+  });
+
   // --- Vite Middleware or Static Production Serving ---
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
